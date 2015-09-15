@@ -30,8 +30,8 @@ class wiki_login:
 			return self.editToken
 
 	def __exit__(self, type, value, traceback):
-		request = {'action':'logout'}
-		result = self.session.post(self.url, params=request)
+		request = {'action':'logout', 'format':'json'}
+		self.session.post(self.url, params=request)
 		print 'logged out of %s' % self.url
 
 	def _listquery(self, request):

@@ -1,7 +1,4 @@
-import wiki_login
 from wiki_login import wiki_login
-
-
 
 with wiki_login('credentials.json') as wiki:
 	pagesgot = 0
