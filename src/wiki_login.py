@@ -3,13 +3,21 @@ import json
 
 class wiki_login:
 	def __init__(self, credentialsFile):
-		with open(credentialsFile) as credentials:
-			credentialsObject = json.loads(credentials.read())
-			self.url = credentialsObject['url']
-			self.lgname = credentialsObject['lgname']
-			self.lgpassword = credentialsObject['lgpassword']
-			self.bot = credentialsObject['bot']
+		self._get_credentials(credentialsFile)
 		self.session = requests.session()
+
+	def _get_credentials(self, credentialsFile):
+		credentialsPath = 'credentials/' + credentialsFile
+		with open(credentialsPath) as credentials:
+			credentialsObject = json.loads(credentials.read())
+			self.getCredentialsFromObject(credentialObject)
+			
+
+	def get_credentials_from_object(self, credentialsObject):
+		self.url = credentialsObject['url']
+		self.lgname = credentialsObject['lgname']
+		self.lgpassword = credentialsObject['lgpassword']
+		self.bot = credentialsObject['bot']
 
 	def __enter__(self):
 		request = {'action':'login', 'format':'json'}
@@ -18,7 +26,7 @@ class wiki_login:
 		result = self.session.post(self.url, params=request).json()
 		request['lgtoken'] = result['login']['token']
 		result = self.session.post(self.url, params=request).json()
-		print 'logged in to %s' % self.url
+		print 'logged in to %s as %s' % (self.url, self.lgname)
 		return self
 
 	def _editToken(self):
@@ -41,11 +49,8 @@ class wiki_login:
 		request['rvprop'] = 'content'
 		lastContinue = {'continue': ''}
 		while True:
-			# Clone original request
 			req = request.copy()
-			# Modify it with the values returned in the 'continue' section of the last result.
 			req.update(lastContinue)
-			# Call API
 			result = self.session.get(self.url, params=req).json()
 			if 'error' in result: print(result['error'])
 			if 'warnings' in result: print(result['warnings'])
