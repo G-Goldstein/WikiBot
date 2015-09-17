@@ -5,4 +5,4 @@ with wiki_login('credentials.json') as wiki:
 		title = page['title']
 		content = wiki.contentByTitle(title)
 		if (len(content) > 0):  break
-		wiki.prependTextToPage(title, '{{cmbox|type=delete}}', 'Flagged empty page for deletion', minor=True)
+		wiki.markPageForDeletion(title, 'Flagged empty page for deletion')

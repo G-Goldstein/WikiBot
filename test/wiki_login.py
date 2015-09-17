@@ -38,6 +38,5 @@ class TestWikiGetCredentials(unittest.TestCase):
 		self.assertEqual(wikiInstance.lgpassword, 'myPassword')
 		self.assertEqual(wikiInstance.bot, True)
 
-
 if __name__ == '__main__':
 	unittest.main()
