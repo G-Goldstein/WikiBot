@@ -27,7 +27,7 @@ class TestWikiGetCredentials(unittest.TestCase):
 	@patch('__builtin__.open')
 	@patch('json.loads')
 
-	def test_get_credentials(self, mock_load, mock_open, mock_session):
+	def test_get_credentials_from_object(self, mock_load, mock_open, mock_session):
 		wikimock = wiki_login
 		wikimock._get_credentials = MagicMock()
 		credentialObject = {'url':'www.wikipedia.org', 'lgname':'myName', 'lgpassword':'myPassword','bot':True}
@@ -37,6 +37,8 @@ class TestWikiGetCredentials(unittest.TestCase):
 		self.assertEqual(wikiInstance.lgname, 'myName')
 		self.assertEqual(wikiInstance.lgpassword, 'myPassword')
 		self.assertEqual(wikiInstance.bot, True)
+
+
 
 if __name__ == '__main__':
 	unittest.main()

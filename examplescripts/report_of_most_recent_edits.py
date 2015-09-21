@@ -6,7 +6,11 @@ with wiki_login('credentials.json') as wiki:
 		for page in wiki.allPages():
 			title = page['title']
 			revisionLine = wiki.lastMajorRevisionByTitle(title)
-			reportString = '"' + revisionLine['title'] + '","' + revisionLine['timestamp'] + '","' + revisionLine['user'] + '"'
+			try:
+				reportString = '"' + title + '","' + revisionLine['timestamp'] + '","' + revisionLine['user'] + '"'
+			except:
+				revisionLine = wiki.lastRevisionByTitle(title)
+				reportString = '"' + title + '","' + revisionLine['timestamp'] + '","' + revisionLine['user'] + '"'
 			reportStringSafe = ''
 			try:
 				print(reportString)

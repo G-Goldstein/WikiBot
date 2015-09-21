@@ -1,8 +1,0 @@
-Read through all pages that are not redirects (This ignores templates, categories and files)
-
-For each page:
-	If it's already in one of the categories we're after, do nothing. Otherwise...
-	Get the contributor and timestamp of the most recent non-minor revision.
-	If the most recent non-minor revision was over five years ago, mark the page for deletion. This gives users two months to unflag it before it's due for deletion. Otherwise...
-	Look at the area of the contributor and assign the 'Template:Page ownership' template to that page, with the area set to match the user's area. Also specify 'review=yes' on the template, so that this page goes into the review category.
-	If the user's area isn't known or isn't one of the people we've found, or there are no non-minor edits, we instead put the page in 'Category:Page ownership unknown'

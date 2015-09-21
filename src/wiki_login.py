@@ -12,7 +12,6 @@ class wiki_login:
 			credentialsObject = json.loads(credentials.read())
 			self.get_credentials_from_object(credentialsObject)
 			
-
 	def get_credentials_from_object(self, credentialsObject):
 		self.url = credentialsObject['url']
 		self.lgname = credentialsObject['lgname']
@@ -73,6 +72,7 @@ class wiki_login:
 		request['action'] = 'query'
 		request['format'] = 'json'
 		request['prop'] = 'revisions'
+		request['rvlimit'] = 500
 		request['rvprop'] = 'user|timestamp'
 		result = self.session.get(self.url, params=request).json()
 		for page in result['query']['pages']:
@@ -86,8 +86,8 @@ class wiki_login:
 		request['action'] = 'query'
 		request['format'] = 'json'
 		request['prop'] = 'revisions'
-		request['rvprop'] = 'user|timestamp|flags'
 		request['rvlimit'] = 500
+		request['rvprop'] = 'user|timestamp|flags'
 		lastcontinue = {''}
 		result = self.session.get(self.url, params=request).json()
 		for pageid in result['query']['pages']:
@@ -99,6 +99,7 @@ class wiki_login:
 		request['action'] = 'query'
 		request['format'] = 'json'
 		request['prop'] = 'revisions'
+		request['rvlimit'] = 500
 		request['rvprop'] = 'content'
 		request['apfilterredir'] = 'nonredirects'
 		lastContinue = {'continue': ''}
@@ -145,7 +146,7 @@ class wiki_login:
 		for category in result:
 			yield category['title']
 
-	def pageCategories(self, title):
+	def pageTemplates(self, title):
 		request = {
 		'action':'query',
 		'format':'json',
@@ -154,16 +155,27 @@ class wiki_login:
 		'titles':title
 		}
 		result = self.session.get(self.url, params=request).json()['query']['pages']
-		result = result[result.keys()[0]]['categories']
-		for category in result:
-			yield category['title']
+		try:
+			result = result[result.keys()[0]]['templates']
+			for category in result:
+				yield category['title']
+		except:
+			yield iter([])
 
 	def isPageInCategory(self, title, category):
-		if not category.startswith('Category'):
+		if not category.startswith('Category:'):
 			raise ValueError("Category {!s} not valid; should start with 'Category:'.".format(category))
 		cats = self.pageCategories(title)
 		for cat in cats:
 			if cat == category: return True
+		return False
+
+	def pageHasTemplate(self, title, template):
+		if not template.startswith('Template:'):
+			raise ValueError("Template {!s} not valid; should start with 'Template:'.".format(template))
+		allTemplates = self.pageTemplates(title)
+		for tem in allTemplates:
+			if tem == template: return True
 		return False
 
 	def isPageMarkedForDeletion(self, title):
