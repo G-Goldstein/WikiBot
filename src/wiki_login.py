@@ -142,9 +142,12 @@ class wiki_login:
 		'titles':title
 		}
 		result = self.session.get(self.url, params=request).json()['query']['pages']
-		result = result[result.keys()[0]]['categories']
-		for category in result:
-			yield category['title']
+		try:
+			result = result[result.keys()[0]]['categories']
+			for category in result:
+				yield category['title']
+		except:
+			iter(())
 
 	def pageTemplates(self, title):
 		request = {
@@ -160,7 +163,7 @@ class wiki_login:
 			for category in result:
 				yield category['title']
 		except:
-			yield iter([])
+			iter(())
 
 	def isPageInCategory(self, title, category):
 		if not category.startswith('Category:'):
