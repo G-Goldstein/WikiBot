@@ -88,7 +88,6 @@ class wiki_login:
 		request['prop'] = 'revisions'
 		request['rvlimit'] = 500
 		request['rvprop'] = 'user|timestamp|flags'
-		lastcontinue = {''}
 		result = self.session.get(self.url, params=request).json()
 		for pageid in result['query']['pages']:
 			page = result['query']['pages'][pageid]
