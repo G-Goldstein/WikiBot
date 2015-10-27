@@ -187,6 +187,7 @@ class wiki_login:
 
 	def markPageForDeletion(self, title, summary):
 		if not self.isPageMarkedForDeletion(title):
+			print('Marked ' + title + ' for deletion.')
 			self._prependTextToPage(title, '{{cmbox|type=delete}}', summary, minor=True)
 
 	def _prependTextToPage(self, pageTitle, text, summary, minor):
@@ -204,7 +205,7 @@ class wiki_login:
 			request['notminor'] = ''
 		if self.bot:
 			request['bot'] = ''
-		print(request)
+		#print(request)
 		result = self.session.post(self.url, params=request).json()
 
 	def delete_page(self, title, reason):
