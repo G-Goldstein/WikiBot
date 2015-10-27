@@ -25,13 +25,13 @@ class wiki_login:
 		result = self.session.post(self.url, params=request).json()
 		request['lgtoken'] = result['login']['token']
 		result = self.session.post(self.url, params=request).json()
-		print('logged in to {!s} as {!s}'.format(self.url, self.lgname))
+		print('logged in')# to {!s} as {!s}'.format(self.url, self.lgname))
 		return self
 
 	def __exit__(self, type, value, traceback):
 		request = {'action':'logout', 'format':'json'}
 		self.session.post(self.url, params=request)
-		print('logged out of {!s}'.format(self.url))
+		print('logged out')# of {!s}'.format(self.url))
 
 	def _editToken(self):
 		try:
