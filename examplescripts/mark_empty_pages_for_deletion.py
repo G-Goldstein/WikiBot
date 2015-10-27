@@ -1,3 +1,5 @@
+#! /usr/local/bin/python3.4
+
 from src.wiki_login import wiki_login
 
 with wiki_login('credentials.json') as wiki:
